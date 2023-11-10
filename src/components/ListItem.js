@@ -10,7 +10,7 @@ const ListItem = ({ title, imageUri }) => (
         uri: imageUri
       }}
     />
-    <Text>{title}</Text>
+    <Text style={styles.text}>{title}</Text>
 
     <AntDesign name="hearto" size={24} color="red" />
   </View>
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  image: { width: 50, height: 50 }
+  image: { width: 50, height: 50 },
+  text: { maxWidth: 200 }
 });
 export default ListItem;
