@@ -1,51 +1,19 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import ItemList from '../components/List';
+import { useGetImages } from '../hooks/useGetImages';
 
 const AllImages = () => {
-  const Data = [
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    }
-  ];
-
-  return (
-    <View style={styles.container}>
-      <ItemList data={Data} />
-    </View>
-  );
+  const data = useGetImages();
+  if (data) {
+    images = data.data;
+    console.log(images);
+    return (
+      <View style={styles.container}>
+        <ItemList data={images} />
+      </View>
+    );
+  }
 };
 
 styles = StyleSheet.create({

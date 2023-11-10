@@ -8,7 +8,7 @@ const ItemList = ({ data }) => {
       renderItem={({ item }) => (
         <ListItem
           title={item.title}
-          imageUri={'https://reactnative.dev/img/tiny_logo.png'}
+          imageUri={`https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`}
         />
       )}
     />
