@@ -1,8 +1,8 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
 import ItemList from '../components/List';
 
-const AllImages = () => {
+const FavImages = () => {
   const Data = [
     {
       title: 'Simon',
@@ -51,4 +51,4 @@ const AllImages = () => {
 styles = StyleSheet.create({
   container: { backgroundColor: 'black', flex: 1 }
 });
-export default AllImages;
+export default FavImages;
