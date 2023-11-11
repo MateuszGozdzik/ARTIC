@@ -7,7 +7,7 @@ import {
   FlatList,
   ActivityIndicator
 } from 'react-native';
-import { AntDesign } from '@expo/vector-icons';
+import LikedButton from './LikedButton';
 
 const List = ({ data, loading, fetchData }) => {
   const renderItem = ({ item }) => (
@@ -19,14 +19,14 @@ const List = ({ data, loading, fetchData }) => {
         }}
       />
       <Text style={styles.text}>{item.title}</Text>
-      <AntDesign name="hearto" size={24} color="red" />
+      <LikedButton itemId={item.image_id} />
     </View>
   );
 
   return (
     <FlatList
       data={data}
-      // keyExtractor={(item) => item.id.toString()}
+      keyExtractor={(item) => item.image_id}
       onEndReached={fetchData}
       onEndReachedThreshold={0.1}
       ListFooterComponent={loading && <ActivityIndicator />}
