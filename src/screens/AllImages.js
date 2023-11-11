@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import List from '../components/List';
-// import { useGetImages } from '../hooks/useGetImages';
 
 const AllImages = () => {
   const [data, setData] = useState([]);
@@ -27,7 +26,6 @@ const AllImages = () => {
           if (prevData) {
             return [...prevData, ...newData];
           } else {
-            // Handle the case when prevData is not available (e.g., initial state)
             return [...newData];
           }
         });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, FlatList, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import ItemList from '../components/List';
 
 const FavImages = () => {
