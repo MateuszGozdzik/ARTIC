@@ -1,23 +1,36 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  FlatList,
+  ActivityIndicator
+} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 
-const List = ({ data }) => {
+const List = ({ data, loading, fetchData }) => {
+  const renderItem = ({ item }) => (
+    <View style={styles.item}>
+      <Image
+        style={styles.image}
+        source={{
+          uri: `https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`
+        }}
+      />
+      <Text style={styles.text}>{item.title}</Text>
+      <AntDesign name="hearto" size={24} color="red" />
+    </View>
+  );
+
   return (
     <FlatList
       data={data}
-      renderItem={({ item }) => (
-        <View style={styles.item}>
-          <Image
-            style={styles.image}
-            source={{
-              uri: `https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`
-            }}
-          />
-          <Text style={styles.text}>{item.title}</Text>
-          <AntDesign name="hearto" size={24} color="red" />
-        </View>
-      )}
+      // keyExtractor={(item) => item.id.toString()}
+      onEndReached={fetchData}
+      onEndReachedThreshold={0.1}
+      ListFooterComponent={loading && <ActivityIndicator />}
+      renderItem={renderItem}
     />
   );
 };
