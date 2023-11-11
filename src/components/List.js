@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center'
   },
-  image: { width: 50, height: 50 },
-  text: { maxWidth: 200 }
+  image: { width: 50, height: 50, borderRadius: 10 },
+  text: { maxWidth: 200, textAlign: 'center' }
 });
 
 export default List;

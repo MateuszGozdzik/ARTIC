@@ -8,7 +8,8 @@ export const useGetImages = () => {
   const fetchImages = async () => {
     try {
       const res = await fetch(
-        `https://api.artic.edu/api/v1/artworks?page=${page}&fields=title,api_link,image_id`
+        // `https://api.artic.edu/api/v1/artworks?page=${page}&fields=title,api_link,image_id`
+        `https://api.artic.edu/api/v1/artworks?page=1`
       );
       setPage(page + 1);
       const data = await res.json();
