@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import ItemList from '../components/List';
+import List from '../components/List';
 import { useGetImages } from '../hooks/useGetImages';
 
 const AllImages = () => {
@@ -10,7 +10,7 @@ const AllImages = () => {
     console.log(images);
     return (
       <View style={styles.container}>
-        <ItemList data={images} />
+        <List data={images} />
       </View>
     );
   }
