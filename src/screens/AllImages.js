@@ -16,7 +16,6 @@ const AllImages = () => {
     if (!loading)
       try {
         setLoading(true);
-        console.log('Page: ' + page);
         const response = await fetch(
           `https://api.artic.edu/api/v1/artworks?limit=15&page=${page}&fields=title,api_link,image_id,`
         );

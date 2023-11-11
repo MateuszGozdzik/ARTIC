@@ -1,54 +1,69 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import ItemList from '../components/List';
+import React, { useState, useEffect } from 'react';
+import { View, TextInput, StyleSheet } from 'react-native';
+import List from '../components/List';
 
-const SearchImages = () => {
-  const Data = [
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
+const AllImages = () => {
+  const [data, setData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    fetchData();
+  }, [searchQuery]);
+
+  const fetchData = async () => {
+    if (!loading) {
+      try {
+        setLoading(true);
+        let apiUrl = `https://api.artic.edu/api/v1/artworks/search?q=${searchQuery}&limit=15&page=${page}&fields=title,api_link,image_id`;
+
+        const response = await fetch(apiUrl);
+        const responseData = await response.json();
+        const newData = responseData.data;
+        setData((prevData) => {
+          if (prevData) {
+            return [...prevData, ...newData];
+          } else {
+            return [...newData];
+          }
+        });
+        setPage((prevPage) => prevPage + 1);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+  };
+
+  const handleSearch = (query) => {
+    setData([]);
+    setPage(1);
+    setSearchQuery(query);
+  };
 
   return (
     <View style={styles.container}>
-      <ItemList data={Data} />
+      <TextInput
+        style={styles.searchBar}
+        placeholder="Search for images"
+        value={searchQuery}
+        onChangeText={handleSearch}
+      />
+      <List data={data} loading={loading} fetchData={fetchData} />
     </View>
   );
 };
 
-styles = StyleSheet.create({
-  container: { backgroundColor: 'black', flex: 1 }
+const styles = StyleSheet.create({
+  container: { backgroundColor: 'black', flex: 1 },
+  searchBar: {
+    backgroundColor: 'white',
+    padding: 10,
+    margin: 10,
+    borderRadius: 5
+  }
 });
-export default SearchImages;
+
+export default AllImages;
