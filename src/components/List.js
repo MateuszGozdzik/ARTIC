@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View,
   Text,
@@ -8,8 +8,26 @@ import {
   ActivityIndicator
 } from 'react-native';
 import LikedButton from './LikedButton';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const List = ({ data, loading, fetchData }) => {
+  const [likedItems, setLikedItems] = useState([]);
+
+  useEffect(() => {
+    loadLikedItems();
+  }, []);
+
+  const loadLikedItems = async () => {
+    try {
+      const storedLikedItems = await AsyncStorage.getItem('likedItems');
+      if (storedLikedItems) {
+        setLikedItems(JSON.parse(storedLikedItems));
+      }
+    } catch (error) {
+      console.error('Error loading liked items:', error);
+    }
+  };
+
   const renderItem = ({ item }) => (
     <View style={styles.item}>
       <Image
@@ -19,14 +37,16 @@ const List = ({ data, loading, fetchData }) => {
         }}
       />
       <Text style={styles.text}>{item.title}</Text>
-      <LikedButton itemId={item.image_id} />
+      <LikedButton
+        itemId={item.image_id}
+        isLiked={likedItems.includes(item.image_id)}
+      />
     </View>
   );
 
   return (
     <FlatList
       data={data}
-      keyExtractor={(item) => item.image_id}
       onEndReached={fetchData}
       onEndReachedThreshold={0.1}
       ListFooterComponent={loading && <ActivityIndicator />}
