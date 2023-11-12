@@ -31,10 +31,7 @@ const List = ({ data, loading, fetchData }) => {
         }}
       />
       <Text style={styles.text}>{item.title}</Text>
-      <LikedButton
-        itemId={item.image_id}
-        isLiked={checkLikedStatus(item.image_id)}
-      />
+      <LikedButton itemId={item.id} />
     </View>
   );
 
