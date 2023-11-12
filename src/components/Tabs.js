@@ -1,7 +1,7 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import AllImages from '../screens/AllImages';
-import FavImages from '../screens/FavoriteImages';
+import FavImages from '../screens/FavouriteImages';
 import SearchImages from '../screens/SearchImages';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
