@@ -1,54 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import ItemList from '../components/List';
+import List from '../components/List';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const FavImages = () => {
-  const Data = [
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
-    },
-    {
-      title: 'Simon',
-      image_uri:
-        'https://buffer.com/cdn-cgi/image/w=1000,fit=contain,q=90,f=auto/library/content/images/size/w1200/2023/10/free-images.jpg'
+const LikedImages = () => {
+  const [likedData, setLikedData] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    // Fetch initial liked data
+    fetchLikedData();
+  }, []);
+
+  const fetchLikedData = async () => {
+    if (!loading) {
+      try {
+        setLoading(true);
+        const likedDataFromStorage = await fetchLikedDataFromStorage();
+        setLikedData(likedDataFromStorage);
+      } catch (error) {
+        console.error('Error fetching liked data:', error);
+      } finally {
+        setLoading(false);
+      }
     }
-  ];
+  };
 
-  return (
-    <View style={styles.container}>
-      <ItemList data={Data} />
-    </View>
-  );
+  const fetchLikedDataFromStorage = async () => {
+    try {
+      const storedLikedItems = await AsyncStorage.getItem('likedItems');
+      if (storedLikedItems) {
+        return JSON.parse(storedLikedItems);
+      }
+      return [];
+    } catch (error) {
+      console.error('Error loading liked items:', error);
+      return [];
+    }
+  };
+
+  if (likedData) {
+    return (
+      <View style={styles.container}>
+        <List data={likedData} loading={loading} fetchData={fetchLikedData} />
+      </View>
+    );
+  }
+
+  // Return null or any default component if likedData is not available yet
+  return null;
 };
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: { backgroundColor: 'black', flex: 1 }
 });
-export default FavImages;
+
+export default LikedImages;
+
+// ! Doesnt Work
