@@ -24,25 +24,27 @@ const ImageDescription = (props) => {
 
   if (data) {
     return (
-      <View style={styles.wrapper}>
-        <ImageBackground
-          source={{
-            uri: `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`
-          }}
-          style={styles.image}
-        >
-          <Text style={styles.text}>{data.title}</Text>
-        </ImageBackground>
+      <View style={styles.container}>
+        <View style={styles.wrapper}>
+          <ImageBackground
+            source={{
+              uri: `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`
+            }}
+            style={styles.image}
+          >
+            <Text style={styles.text}>{data.title}</Text>
+          </ImageBackground>
+        </View>
       </View>
     );
   }
 };
 const styles = StyleSheet.create({
+  container: { backgroundColor: 'black' },
   image: {
     width: 300,
     height: 500,
-    justifyContent: 'flex-end',
-    borderBlockColor: 'black'
+    justifyContent: 'flex-end'
   },
   text: {},
   wrapper: { flex: 1, alignItems: 'center' }
