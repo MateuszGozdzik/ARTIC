@@ -40,7 +40,7 @@ const ImageDescription = (props) => {
   }
 };
 const styles = StyleSheet.create({
-  container: { backgroundColor: 'black' },
+  container: { backgroundColor: 'black', flex: 1 },
   image: {
     width: 300,
     height: 500,
