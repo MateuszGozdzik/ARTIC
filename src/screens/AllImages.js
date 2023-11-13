@@ -20,13 +20,12 @@ const AllImages = () => {
         );
         const responseData = await response.json();
         const newData = responseData.data;
-        setData((prevData) => {
-          if (prevData) {
-            return [...prevData, ...newData];
-          } else {
-            return [...newData];
-          }
-        });
+
+        if (page === 1) {
+          setData(newData);
+        } else {
+          setData((prevData) => [...prevData, ...newData]);
+        }
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         console.error('Error fetching data:', error);

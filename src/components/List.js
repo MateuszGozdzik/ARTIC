@@ -24,12 +24,19 @@ const List = ({ data, loading, fetchData }) => {
 
   const renderItem = ({ item }) => (
     <View style={styles.item}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: `https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`
-        }}
-      />
+      {item.image_id ? (
+        <Image
+          style={styles.image}
+          source={{
+            uri: `https://www.artic.edu/iiif/2/${item.image_id}/full/843,/0/default.jpg`
+          }}
+        />
+      ) : (
+        <Image
+          style={styles.image}
+          source={require('../../assets/amongus.png')}
+        />
+      )}
       <Text style={styles.text}>{item.title}</Text>
       <LikedButton itemId={item.id} />
     </View>

@@ -6,6 +6,7 @@ import SearchImages from '../screens/SearchImages';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import ImageDescription from '../screens/imageDescription';
 
 const Tab = createBottomTabNavigator();
 
@@ -68,6 +69,20 @@ const Tabs = () => {
           )
         }}
       />
+      <Tab.Screen
+        name={'ImgDecr'}
+        options={{
+          tabBarIcon: ({ focused }) => (
+            <AntDesign
+              name="hearto"
+              size={24}
+              color={focused ? 'lightblue' : 'gray'}
+            />
+          )
+        }}
+      >
+        {() => <ImageDescription itemId={3061} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };
