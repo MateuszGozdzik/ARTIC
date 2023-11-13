@@ -7,6 +7,7 @@ const FavImages = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [usedIds, setUsedIds] = useState([]);
 
   useEffect(() => {
     fetchData();
@@ -15,21 +16,29 @@ const FavImages = () => {
   const fetchData = async () => {
     if (!loading)
       try {
-        const favImageIds = await loadLikedItems();
-        console.log(favImageIds);
         setLoading(true);
+        const favImageIds = await loadLikedItems();
+
+        const newIds = usedIds
+          ? favImageIds.filter((id) => !usedIds.includes(id))
+          : favImageIds;
+        const newIdsString = newIds.join(',');
+
         const response = await fetch(
-          `https://api.artic.edu/api/v1/artworks?limit=15&page=${page}&fields=title,api_link,image_id,id&ids=${favImageIds}`
+          `https://api.artic.edu/api/v1/artworks?limit=15&page=${page}&fields=title,api_link,image_id,id&ids=${newIdsString}`
         );
         const responseData = await response.json();
         const newData = responseData.data;
-        setData((prevData) => {
-          if (prevData) {
-            return [...prevData, ...newData];
-          } else {
-            return [...newData];
-          }
-        });
+        const usedIds = newData.map((item) => item.id);
+
+        if (page === 1) {
+          setUsedIds(usedIds);
+          setData(newData);
+        } else {
+          setUsedIds((prevUsedIds) => [...prevUsedIds, ...usedIds]);
+          setData((prevData) => [...prevData, ...newData]);
+        }
+
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         console.error('Error fetching data:', error);
