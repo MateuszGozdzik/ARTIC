@@ -9,7 +9,6 @@ const FavImages = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    // Fetch initial data
     fetchData();
   }, []);
 

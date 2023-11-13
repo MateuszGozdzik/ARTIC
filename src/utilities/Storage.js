@@ -26,10 +26,8 @@ const toggleLikedStatus = async (id) => {
     const index = storedLikedItems.indexOf(id);
 
     if (index !== -1) {
-      // Item is liked, so remove it
       storedLikedItems.splice(index, 1);
     } else {
-      // Item is not liked, so add it
       storedLikedItems.push(id);
     }
 

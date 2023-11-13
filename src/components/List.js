@@ -8,7 +8,7 @@ import {
   ActivityIndicator
 } from 'react-native';
 import LikedButton from './LikedButton';
-import { loadLikedItems, checkLikedStatus } from '../utilities/Storage';
+import { loadLikedItems } from '../utilities/Storage';
 
 const List = ({ data, loading, fetchData }) => {
   const [likedItems, setLikedItems] = useState([]);
