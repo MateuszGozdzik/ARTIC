@@ -19,6 +19,12 @@ const FavImages = () => {
         setLoading(true);
         const favImageIds = await loadLikedItems();
 
+        // Check if all liked images are already fetched
+        if (data.length === favImageIds.length) {
+          setLoading(false);
+          return; // No need to fetch more data
+        }
+
         const newIds = usedIds
           ? favImageIds.filter((id) => !usedIds.includes(id))
           : favImageIds;
