@@ -13,7 +13,7 @@ const LikedButton = ({ itemId }) => {
     };
 
     loadLikedStatus();
-  }, [itemId]);
+  }, []);
 
   const handleLikePress = async () => {
     try {
