@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 const ImageDescription = (props) => {
   const [data, setData] = useState(null);
@@ -23,45 +24,56 @@ const ImageDescription = (props) => {
   };
 
   if (data) {
+    const imageUri = `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`;
+
     return (
       <View style={styles.container}>
-        <Image
-          source={{
-            uri: `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`
-          }}
-          style={styles.image}
+        <ImageViewer
+          imageUrls={[{ url: imageUri }]}
+          renderHeader={() => <Text style={styles.title}>{data.title}</Text>}
+          style={styles.imageViewer}
+          renderIndicator={() => null}
         />
-        <Text style={styles.title}>{data.title}</Text>
         <View style={styles.infoWrapper}>
-          <Text style={{ color: 'white' }}>{data.place_of_origin}</Text>
-          <Text style={{ color: 'white', textAlign: 'left' }}>
+          <Text style={{ color: 'white', fontSize: 18 }}>
+            {data.place_of_origin}
+          </Text>
+          <Text style={{ color: 'white', textAlign: 'left', fontSize: 16 }}>
             {data.date_display}
           </Text>
-          <Text style={{ color: 'white', textAlign: 'left' }}>
+          <Text style={{ color: 'white', textAlign: 'left', fontSize: 16 }}>
             {data.artist_titles}
           </Text>
         </View>
       </View>
     );
   }
+
+  return null;
 };
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
-    flex: 1,
-    alignItems: 'center'
+    flex: 1
   },
-  image: {
-    width: 300,
-    height: 500,
-    flex: 4
+  title: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: 'white',
+    textAlign: 'center',
+    paddingTop: 20
   },
-  title: { flex: 1, fontSize: 30, fontWeight: 'bold', color: 'white' },
+  imageViewer: {
+    height: 'auto',
+    flex: 2
+  },
   infoWrapper: {
-    flex: 1,
-    width: '90%',
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'space-evenly',
+    padding: 10,
+    flex: 2
   }
 });
+
 export default ImageDescription;
