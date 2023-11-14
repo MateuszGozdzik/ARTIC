@@ -1,32 +1,37 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import LikedButton from './LikedButton';
-import ImageDescription from '../screens/ImageDescription';
 
-const handleItemPress = (itemId) => {
-  return ImageDescription(itemId);
+const ListItem = ({ itemData }) => {
+  const navigation = useNavigation();
+
+  const handleItemPress = () => {
+    navigation.navigate('ImageDescription', { itemId: itemData.id });
+  };
+
+  return (
+    <TouchableOpacity onPress={handleItemPress}>
+      <View style={styles.item}>
+        {itemData.image_id ? (
+          <Image
+            style={styles.image}
+            source={{
+              uri: `https://www.artic.edu/iiif/2/${itemData.image_id}/full/843,/0/default.jpg`
+            }}
+          />
+        ) : (
+          <Image
+            style={styles.image}
+            source={require('../../assets/amongus.png')}
+          />
+        )}
+        <Text style={styles.text}>{itemData.title}</Text>
+        <LikedButton itemId={itemData.id} />
+      </View>
+    </TouchableOpacity>
+  );
 };
-const ListItem = ({ itemData }) => (
-  <TouchableOpacity onPress={handleItemPress}>
-    <View style={styles.item}>
-      {itemData.image_id ? (
-        <Image
-          style={styles.image}
-          source={{
-            uri: `https://www.artic.edu/iiif/2/${itemData.image_id}/full/843,/0/default.jpg`
-          }}
-        />
-      ) : (
-        <Image
-          style={styles.image}
-          source={require('../../assets/amongus.png')}
-        />
-      )}
-      <Text style={styles.text}>{itemData.title}</Text>
-      <LikedButton itemId={itemData.id} />
-    </View>
-  </TouchableOpacity>
-);
 
 const styles = StyleSheet.create({
   item: {

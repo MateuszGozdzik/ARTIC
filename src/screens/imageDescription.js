@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-const ImageDescription = (props) => {
+const ImageDescription = ({ route }) => {
+  const { itemId } = route.params;
   const [data, setData] = useState(null);
-  const { itemId } = props;
+  console.log(itemId);
 
   useEffect(() => {
     fetchData();
