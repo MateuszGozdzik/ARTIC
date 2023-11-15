@@ -17,7 +17,7 @@ const SearchImages = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          `https://api.artic.edu/api/v1/artworks/search?q=${searchQuery}&limit=15&page=${page}&fields=title,api_link,image_id`
+          `https://api.artic.edu/api/v1/artworks/search?q=${searchQuery}&limit=15&page=${page}&fields=title,api_link,image_id,id`
         );
         const responseData = await response.json();
         const newData = responseData.data;

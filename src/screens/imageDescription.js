@@ -34,17 +34,15 @@ const ImageDescription = ({ route }) => {
           style={styles.imageViewer}
           renderIndicator={() => null}
         />
-        <View style={styles.infoWrapper}>
-          <Text style={{ color: 'white', fontSize: 18 }}>
-            {data.place_of_origin}
-          </Text>
-          <Text style={{ color: 'white', textAlign: 'left', fontSize: 16 }}>
-            {data.date_display}
-          </Text>
-          <Text style={{ color: 'white', textAlign: 'left', fontSize: 16 }}>
-            {data.artist_titles}
-          </Text>
-        </View>
+        <Text style={{ color: 'white', fontSize: 18 }}>
+          {data.place_of_origin}
+        </Text>
+        <Text style={{ color: 'white', textAlign: 'left', fontSize: 16 }}>
+          {data.date_display}
+        </Text>
+        <Text style={{ color: 'white', textAlign: 'left', fontSize: 16 }}>
+          {data.artist_titles}
+        </Text>
       </View>
     );
   }
@@ -59,19 +57,13 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '900',
     color: 'white',
     textAlign: 'center',
     paddingTop: 20
   },
   imageViewer: {
     height: 'auto',
-    flex: 2
-  },
-  infoWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    padding: 10,
     flex: 2
   }
 });
