@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  useWindowDimensions,
+  ScrollView
+} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import RenderHtml from 'react-native-render-html';
 
 const ImageDescription = ({ route }) => {
   const { itemId } = route.params;
@@ -13,7 +21,7 @@ const ImageDescription = ({ route }) => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable`
+        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable,description`
       );
       const responseData = await response.json();
       const newData = responseData.data;
@@ -27,21 +35,51 @@ const ImageDescription = ({ route }) => {
     const imageUri = `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`;
 
     const Img = () => {
-      return data.is_zoomable ? (
-        <ImageViewer
-          imageUrls={[{ url: imageUri }]}
-          renderHeader={() => <Text style={styles.title}>{data.title}</Text>}
-          style={styles.image}
-          renderIndicator={() => null}
-        />
-      ) : (
-        <Image
-          style={styles.image}
-          source={{
-            uri: imageUri
-          }}
-        />
-      );
+      if (data.is_zoomable) {
+        return (
+          <ImageViewer
+            imageUrls={[{ url: imageUri }]}
+            renderHeader={() => <Text style={styles.title}>{data.title}</Text>}
+            style={styles.image}
+            renderIndicator={() => null}
+          />
+        );
+      } else if (data.image_id) {
+        return (
+          <View style={styles.image}>
+            <Text style={styles.title}>{data.title}</Text>
+            <Image
+              style={{ width: '100%', height: 500 }}
+              source={{
+                uri: `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`
+              }}
+            />
+          </View>
+        );
+      } else {
+        return (
+          <View style={styles.image}>
+            <Text style={styles.title}>{data.title}</Text>
+            <Image
+              style={{ width: '100%', height: 300 }}
+              source={require('../../assets/no-image.jpeg')}
+            />
+          </View>
+        );
+      }
+    };
+
+    const Description = () => {
+      const { width } = useWindowDimensions();
+      return data.description ? (
+        <ScrollView style={{ flex: 1 }}>
+          <RenderHtml
+            source={{ html: data.description }}
+            contentWidth={width}
+            baseStyle={styles.html}
+          />
+        </ScrollView>
+      ) : null;
     };
 
     return (
@@ -65,6 +103,7 @@ const ImageDescription = ({ route }) => {
             {data.date_display}
           </Text>
         </View>
+        <Description />
       </View>
     );
   }
@@ -75,10 +114,11 @@ const ImageDescription = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: 'black',
-    flex: 1
+    flex: 1,
+    paddingBottom: 20
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '900',
     color: 'white',
     textAlign: 'center',
@@ -87,8 +127,11 @@ const styles = StyleSheet.create({
   image: {
     flex: 2
   },
-  descWrapper: {
-    flex: 1
+  // descWrapper: {
+  //   flex: 1
+  // },
+  html: {
+    color: 'white'
   }
 });
 
