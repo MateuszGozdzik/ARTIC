@@ -9,9 +9,10 @@ import {
 } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RenderHtml from 'react-native-render-html';
+import LikedButton from '../components/LikedButton';
 
 const ImageDescription = ({ route }) => {
-  // Return Image Descriptio, with Zooming image if flag is_zoomable, normal if not and no-image if there isn't image
+  // Return Image Description, with Zooming image if flag is_zoomable, normal if not and no-image if there isn't image
   const { itemId } = route.params;
   const [data, setData] = useState(null);
 
@@ -87,16 +88,19 @@ const ImageDescription = ({ route }) => {
       <View style={styles.container}>
         <Img />
         <View style={styles.descWrapper}>
-          <Text
-            style={{
-              color: 'white',
-              textAlign: 'left',
-              fontSize: 16,
-              fontWeight: 'bold'
-            }}
-          >
-            {data.artist_titles}
-          </Text>
+          <View style={{ flexDirection: 'row' }}>
+            <Text
+              style={{
+                color: 'white',
+                textAlign: 'left',
+                fontSize: 16,
+                fontWeight: 'bold'
+              }}
+            >
+              {data.artist_titles}
+            </Text>
+            <LikedButton itemId={data.id} />
+          </View>
           <Text style={{ color: 'white', fontSize: 18 }}>
             {data.place_of_origin}
           </Text>
