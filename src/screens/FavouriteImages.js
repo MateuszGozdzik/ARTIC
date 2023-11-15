@@ -7,6 +7,7 @@ const FavImages = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
     fetchData();
@@ -39,11 +40,27 @@ const FavImages = () => {
         setLoading(false);
       }
   };
+  const handleRefresh = () => {
+    if (refreshing) {
+      return;
+    }
+    setRefreshing(true);
+    setData([]);
+    setPage(0);
+    fetchData();
+    setRefreshing(false);
+  };
 
   if (data) {
     return (
       <View style={styles.container}>
-        <List data={data} loading={loading} fetchData={fetchData} />
+        <List
+          data={data}
+          loading={loading}
+          fetchData={fetchData}
+          refreshing={refreshing}
+          onRefresh={handleRefresh}
+        />
       </View>
     );
   }
