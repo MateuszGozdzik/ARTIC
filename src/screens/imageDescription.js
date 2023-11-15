@@ -11,6 +11,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import RenderHtml from 'react-native-render-html';
 
 const ImageDescription = ({ route }) => {
+  // Return Image Descriptio, with Zooming image if flag is_zoomable, normal if not and no-image if there isn't image
   const { itemId } = route.params;
   const [data, setData] = useState(null);
 
@@ -127,9 +128,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 2
   },
-  // descWrapper: {
-  //   flex: 1
-  // },
   html: {
     color: 'white'
   }
