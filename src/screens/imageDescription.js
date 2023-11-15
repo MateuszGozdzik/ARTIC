@@ -5,7 +5,6 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 const ImageDescription = ({ route }) => {
   const { itemId } = route.params;
   const [data, setData] = useState(null);
-  console.log(itemId);
 
   useEffect(() => {
     fetchData();

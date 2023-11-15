@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  FlatList,
-  ActivityIndicator,
-  TouchableOpacity
-} from 'react-native';
-import LikedButton from './LikedButton';
+import { FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { loadLikedItems } from '../utilities/Storage';
 import ListItem from './ListItem';
 

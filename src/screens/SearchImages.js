@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import List from '../components/List';
 
-const AllImages = () => {
+const SearchImages = () => {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -13,28 +13,26 @@ const AllImages = () => {
   }, [searchQuery]);
 
   const fetchData = async () => {
-    if (!loading) {
+    if (!loading)
       try {
         setLoading(true);
-        let apiUrl = `https://api.artic.edu/api/v1/artworks/search?q=${searchQuery}&limit=15&page=${page}&fields=title,api_link,image_id`;
-
-        const response = await fetch(apiUrl);
+        const response = await fetch(
+          `https://api.artic.edu/api/v1/artworks/search?q=${searchQuery}&limit=15&page=${page}&fields=title,api_link,image_id`
+        );
         const responseData = await response.json();
         const newData = responseData.data;
-        setData((prevData) => {
-          if (prevData) {
-            return [...prevData, ...newData];
-          } else {
-            return [...newData];
-          }
-        });
+
+        if (page === 1) {
+          setData(newData);
+        } else {
+          setData((prevData) => [...prevData, ...newData]);
+        }
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
         setLoading(false);
       }
-    }
   };
 
   const handleSearch = (query) => {
@@ -42,18 +40,19 @@ const AllImages = () => {
     setPage(1);
     setSearchQuery(query);
   };
-
-  return (
-    <View style={styles.container}>
-      <TextInput
-        style={styles.searchBar}
-        placeholder="Search for images"
-        value={searchQuery}
-        onChangeText={handleSearch}
-      />
-      <List data={data} loading={loading} fetchData={fetchData} />
-    </View>
-  );
+  if (data) {
+    return (
+      <View style={styles.container}>
+        <TextInput
+          style={styles.searchBar}
+          placeholder="Search for images"
+          value={searchQuery}
+          onChangeText={handleSearch}
+        />
+        <List data={data} loading={loading} fetchData={fetchData} />
+      </View>
+    );
+  }
 };
 
 const styles = StyleSheet.create({
@@ -66,4 +65,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AllImages;
+export default SearchImages;

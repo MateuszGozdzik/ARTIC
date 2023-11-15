@@ -32,7 +32,6 @@ const FavImages = () => {
         } else {
           setData((prevData) => [...prevData, ...newData]);
         }
-
         setPage((prevPage) => prevPage + 1);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -50,7 +49,7 @@ const FavImages = () => {
   }
 };
 
-styles = StyleSheet.create({
+const styles = StyleSheet.create({
   container: { backgroundColor: 'black', flex: 1 }
 });
 export default FavImages;
