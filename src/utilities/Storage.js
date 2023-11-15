@@ -39,4 +39,13 @@ const toggleLikedStatus = async (id) => {
   }
 };
 
-export { loadLikedItems, checkLikedStatus, toggleLikedStatus };
+const clearLikedItems = async () => {
+  try {
+    await AsyncStorage.removeItem('likedItems');
+    console.log('Liked items cleared successfully.');
+  } catch (error) {
+    console.error('Error clearing liked items:', error);
+  }
+};
+
+export { loadLikedItems, checkLikedStatus, toggleLikedStatus, clearLikedItems };

@@ -5,6 +5,7 @@ import AllImages from '../screens/AllImages';
 import FavImages from '../screens/FavouriteImages';
 import SearchImages from '../screens/SearchImages';
 import ImageDescription from '../screens/ImageDescription';
+import Settings from '../screens/Settings';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -64,6 +65,19 @@ const MainTabs = () => (
         tabBarIcon: ({ focused }) => (
           <FontAwesome
             name="search"
+            size={24}
+            color={focused ? 'lightblue' : 'gray'}
+          />
+        )
+      }}
+    />
+    <Tab.Screen
+      name={'Settings'}
+      component={Settings}
+      options={{
+        tabBarIcon: ({ focused }) => (
+          <AntDesign
+            name="setting"
             size={24}
             color={focused ? 'lightblue' : 'gray'}
           />
