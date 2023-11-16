@@ -23,7 +23,7 @@ const ImageDescription = ({ route }) => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable,description`
+        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable,description,id`
       );
       const responseData = await response.json();
       const newData = responseData.data;
