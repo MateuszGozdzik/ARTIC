@@ -6,7 +6,8 @@ import {
   Image,
   useWindowDimensions,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import ImageViewer from 'react-native-image-zoom-viewer';
@@ -44,7 +45,6 @@ const ImageDescription = ({ route }) => {
         return (
           <ImageViewer
             imageUrls={[{ url: imageUri }]}
-            renderHeader={() => <Text style={styles.title}>{data.title}</Text>}
             style={styles.image}
             renderIndicator={() => null}
           />
@@ -52,7 +52,6 @@ const ImageDescription = ({ route }) => {
       } else if (data.image_id) {
         return (
           <View style={styles.image}>
-            <Text style={styles.title}>{data.title}</Text>
             <Image
               style={{ width: '100%', height: 500 }}
               source={{
@@ -64,7 +63,6 @@ const ImageDescription = ({ route }) => {
       } else {
         return (
           <View style={styles.image}>
-            <Text style={styles.title}>{data.title}</Text>
             <Image
               style={{ width: '100%', height: 300 }}
               source={require('../../assets/no-image.jpeg')}
@@ -74,14 +72,14 @@ const ImageDescription = ({ route }) => {
       }
     };
 
-    const Description = () => {
+    const Desc = () => {
       const { width } = useWindowDimensions();
       return data.description ? (
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView>
           <RenderHtml
             source={{ html: data.description }}
             contentWidth={width}
-            baseStyle={styles.html}
+            baseStyle={styles.text}
           />
         </ScrollView>
       ) : null;
@@ -91,58 +89,45 @@ const ImageDescription = ({ route }) => {
       navigation.navigate('ArtistDescription', { artistId: data.artist_id });
     };
 
-    return (
-      <View style={styles.container}>
-        <Img />
-        <View style={styles.descWrapper}>
-          <View style={{ flexDirection: 'row' }}>
+    if (data) {
+      return (
+        <View style={styles.container}>
+          <Text style={[styles.text, styles.title]}>{data.title}</Text>
+          <View style={styles.header}>
             <TouchableOpacity onPress={handleArtistPress}>
-              <Text
-                style={{
-                  color: 'white',
-                  textAlign: 'left',
-                  fontSize: 16,
-                  fontWeight: 'bold'
-                }}
-              >
+              <Text style={[styles.text, styles.artist]}>
                 {data.artist_titles}
               </Text>
             </TouchableOpacity>
             <LikedButton itemId={data.id} />
           </View>
-          <Text style={{ color: 'white', fontSize: 18 }}>
-            {data.place_of_origin}
-          </Text>
-          <Text style={{ color: 'white', textAlign: 'left', fontSize: 16 }}>
-            {data.date_display}
-          </Text>
+          <Img />
+          <Desc />
         </View>
-        <Description />
-      </View>
-    );
+      );
+    }
   }
 
-  return null;
+  return (
+    <View style={styles.container}>
+      <ActivityIndicator styles={styles.activityIndicator} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: 'black',
-    flex: 1,
-    paddingBottom: 20
+  container: { backgroundColor: 'black', flex: 1, paddingTop: 30 },
+  text: { color: 'white', textAlign: 'center' },
+  title: { fontSize: 30, fontWeight: 'bold' },
+  artist: { fontSize: 20, fontWeight: '300', textDecorationLine: 'underline' },
+  activityIndicator: {
+    alignSelf: 'center'
   },
-  title: {
-    fontSize: 18,
-    fontWeight: '900',
-    color: 'white',
-    textAlign: 'center',
-    paddingTop: 20
-  },
-  image: {
-    flex: 2
-  },
-  html: {
-    color: 'white'
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    padding: 10,
+    alignItems: 'center'
   }
 });
 
