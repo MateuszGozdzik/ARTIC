@@ -46,7 +46,7 @@ const FavImages = () => {
     }
     setRefreshing(true);
     setData([]);
-    setPage(0);
+    setPage(1);
     fetchData();
     setRefreshing(false);
   };
