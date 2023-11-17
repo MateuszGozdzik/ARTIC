@@ -18,7 +18,7 @@ const FavImages = () => {
       try {
         setLoading(true);
         const favImages = await loadLikedItems();
-        imageIdsToFetch = favImages.slice((page - 1) * 15, page * 15);
+        const imageIdsToFetch = favImages.slice((page - 1) * 15, page * 15);
         if (imageIdsToFetch.length === 0) {
           return;
         }
