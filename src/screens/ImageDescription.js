@@ -5,8 +5,10 @@ import {
   StyleSheet,
   Image,
   useWindowDimensions,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RenderHtml from 'react-native-render-html';
 import LikedButton from '../components/LikedButton';
@@ -15,6 +17,7 @@ const ImageDescription = ({ route }) => {
   // Return Image Description, with Zooming image if flag is_zoomable, normal if not and no-image if there isn't image
   const { itemId } = route.params;
   const [data, setData] = useState(null);
+  const navigation = useNavigation();
 
   useEffect(() => {
     fetchData();
@@ -23,7 +26,7 @@ const ImageDescription = ({ route }) => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable,description,id`
+        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable,description,id,artist_id`
       );
       const responseData = await response.json();
       const newData = responseData.data;
@@ -84,21 +87,27 @@ const ImageDescription = ({ route }) => {
       ) : null;
     };
 
+    const handleArtistPress = () => {
+      navigation.navigate('ArtistDescription', { artistId: data.artist_id });
+    };
+
     return (
       <View style={styles.container}>
         <Img />
         <View style={styles.descWrapper}>
           <View style={{ flexDirection: 'row' }}>
-            <Text
-              style={{
-                color: 'white',
-                textAlign: 'left',
-                fontSize: 16,
-                fontWeight: 'bold'
-              }}
-            >
-              {data.artist_titles}
-            </Text>
+            <TouchableOpacity onPress={handleArtistPress}>
+              <Text
+                style={{
+                  color: 'white',
+                  textAlign: 'left',
+                  fontSize: 16,
+                  fontWeight: 'bold'
+                }}
+              >
+                {data.artist_titles}
+              </Text>
+            </TouchableOpacity>
             <LikedButton itemId={data.id} />
           </View>
           <Text style={{ color: 'white', fontSize: 18 }}>
