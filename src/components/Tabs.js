@@ -5,6 +5,7 @@ import AllImages from '../screens/AllImages';
 import FavImages from '../screens/FavouriteImages';
 import SearchImages from '../screens/SearchImages';
 import ImageDescription from '../screens/ImageDescription';
+import ArtistDescription from '../screens/ArtistDescription';
 import Settings from '../screens/Settings';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -99,6 +100,22 @@ const AppNavigator = () => (
       component={ImageDescription}
       options={{
         title: 'Image Description',
+        headerStyle: {
+          backgroundColor: 'black'
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 25,
+          color: 'white'
+        },
+        headerTintColor: 'white'
+      }}
+    />
+    <Stack.Screen
+      name="ArtistDescription"
+      component={ArtistDescription}
+      options={{
+        title: 'Artist Description',
         headerStyle: {
           backgroundColor: 'black'
         },
