@@ -51,23 +51,19 @@ const ImageDescription = ({ route }) => {
         );
       } else if (data.image_id) {
         return (
-          <View style={styles.image}>
-            <Image
-              style={{ width: '100%', height: 500 }}
-              source={{
-                uri: `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`
-              }}
-            />
-          </View>
+          <Image
+            style={styles.image}
+            source={{
+              uri: `https://www.artic.edu/iiif/2/${data.image_id}/full/843,/0/default.jpg`
+            }}
+          />
         );
       } else {
         return (
-          <View style={styles.image}>
-            <Image
-              style={{ width: '100%', height: 300 }}
-              source={require('../../assets/no-image.jpeg')}
-            />
-          </View>
+          <Image
+            style={styles.image}
+            source={require('../../assets/no-image.jpeg')}
+          />
         );
       }
     };
@@ -75,7 +71,7 @@ const ImageDescription = ({ route }) => {
     const Desc = () => {
       const { width } = useWindowDimensions();
       return data.description ? (
-        <ScrollView>
+        <ScrollView style={styles.description}>
           <RenderHtml
             source={{ html: data.description }}
             contentWidth={width}
@@ -116,8 +112,9 @@ const ImageDescription = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { backgroundColor: 'black', flex: 1, paddingTop: 30 },
+  container: { backgroundColor: 'black', flex: 1, paddingBottom: 50 },
   text: { color: 'white', textAlign: 'center' },
+  image: { flex: 2 },
   title: { fontSize: 30, fontWeight: 'bold' },
   artist: { fontSize: 20, fontWeight: '300', textDecorationLine: 'underline' },
   activityIndicator: {
@@ -127,7 +124,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     padding: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+    flex: 1
+  },
+  description: {
+    flex: 2,
+    backgroundColor: '#1f1f1f',
+    borderRadius: 30,
+    marginTop: 10,
+    paddingHorizontal: 5
   }
 });
 
