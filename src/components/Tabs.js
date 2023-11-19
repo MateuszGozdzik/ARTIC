@@ -7,6 +7,7 @@ import SearchImages from '../screens/SearchImages';
 import ImageDescription from '../screens/ImageDescription';
 import ArtistDescription from '../screens/ArtistDescription';
 import Settings from '../screens/Settings';
+import Map from '../screens/Map';
 import { Entypo } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
@@ -116,6 +117,22 @@ const AppNavigator = () => (
       component={ArtistDescription}
       options={{
         title: 'Artist Description',
+        headerStyle: {
+          backgroundColor: 'black'
+        },
+        headerTitleStyle: {
+          fontWeight: 'bold',
+          fontSize: 25,
+          color: 'white'
+        },
+        headerTintColor: 'white'
+      }}
+    />
+    <Stack.Screen
+      name="Map"
+      component={Map}
+      options={{
+        title: 'Map',
         headerStyle: {
           backgroundColor: 'black'
         },

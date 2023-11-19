@@ -27,7 +27,7 @@ const ImageDescription = ({ route }) => {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable,description,id,artist_id`
+        `https://api.artic.edu/api/v1/artworks/${itemId}?fields=title,image_id,date_display,place_of_origin,artist_titles,is_zoomable,description,id,artist_id,latitude,longitude`
       );
       const responseData = await response.json();
       const newData = responseData.data;
@@ -87,19 +87,40 @@ const ImageDescription = ({ route }) => {
         artistTitle: data.artist_titles
       });
     };
+    const handleMapPress = () => {
+      navigation.navigate('Map', {
+        latitude: data.latitude,
+        longitude: data.longitude,
+        title: data.title
+      });
+    };
+
+    const Map = () => {
+      if (data.latitude & data.longitude) {
+        return (
+          <TouchableOpacity onPress={handleMapPress}>
+            <Text style={[styles.text, styles.map]}>See Image On Map!</Text>
+          </TouchableOpacity>
+        );
+      }
+    };
 
     if (data) {
       return (
         <View style={styles.container}>
           <Text style={[styles.text, styles.title]}>{data.title}</Text>
           <View style={styles.header}>
-            <TouchableOpacity onPress={handleArtistPress}>
-              <Text style={[styles.text, styles.artist]}>
-                {data.artist_titles}
-              </Text>
-            </TouchableOpacity>
+            <View style={styles.links}>
+              <TouchableOpacity onPress={handleArtistPress}>
+                <Text style={[styles.text, styles.artist]}>
+                  {data.artist_titles}
+                </Text>
+              </TouchableOpacity>
+              <Map />
+            </View>
             <LikedButton itemId={data.id} />
           </View>
+
           <Img />
           <Desc />
         </View>
@@ -120,6 +141,7 @@ const styles = StyleSheet.create({
   image: { flex: 2 },
   title: { fontSize: 30, fontWeight: 'bold' },
   artist: { fontSize: 20, fontWeight: '300', textDecorationLine: 'underline' },
+  map: { fontSize: 16, fontWeight: '300', textDecorationLine: 'underline' },
   activityIndicator: {
     alignSelf: 'center'
   },
@@ -136,6 +158,10 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     marginTop: 10,
     paddingHorizontal: 5
+  },
+  links: {
+    flex: 1,
+    alignItems: 'flex-start'
   }
 });
 
