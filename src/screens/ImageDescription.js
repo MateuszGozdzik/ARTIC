@@ -82,7 +82,10 @@ const ImageDescription = ({ route }) => {
     };
 
     const handleArtistPress = () => {
-      navigation.navigate('ArtistDescription', { artistId: data.artist_id });
+      navigation.navigate('ArtistDescription', {
+        artistId: data.artist_id,
+        artistTitle: data.artist_titles
+      });
     };
 
     if (data) {

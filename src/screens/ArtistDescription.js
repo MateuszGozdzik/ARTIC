@@ -9,18 +9,24 @@ import {
   ActivityIndicator
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
+import List from '../components/List';
 
 const ArtistDescription = ({ route }) => {
-  const { artistId } = route.params;
-  const [data, setData] = useState(null);
-  const [img, setImg] = useState(null);
+  const { artistId, artistTitle } = route.params;
   const { width } = useWindowDimensions();
 
+  const [artistData, setArtistData] = useState(null);
+
+  const [imageData, setImageData] = useState([]);
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
-    fetchData();
+    fetchArtistData();
+    fetchImageData();
   }, []);
 
-  const fetchData = async () => {
+  const fetchArtistData = async () => {
     try {
       const response = await fetch(
         `https://api.artic.edu/api/v1/artists/${artistId}`
@@ -28,25 +34,41 @@ const ArtistDescription = ({ route }) => {
 
       const responseData = await response.json();
       const newData = responseData.data;
-      setData(newData);
-
-      const responseImg = await fetch(
-        `https://api.artic.edu/api/v1/artworks/search?limit=1&q=${newData.title}&fields=image_id`
-      );
-      const responseImgData = await responseImg.json();
-      const newImgData = responseImgData.data;
-      setImg(newImgData[0]);
+      setArtistData(newData);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
 
+  const fetchImageData = async () => {
+    if (!loading)
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `https://api.artic.edu/api/v1/artworks/search?page=${page}&q=${artistTitle}&fields=image_id,title`
+        );
+        const responseData = await response.json();
+        const newData = responseData.data;
+
+        if (page === 1) {
+          setImageData(newData);
+        } else {
+          setImageData((prevData) => [...prevData, ...newData]);
+        }
+        setPage((prevPage) => prevPage + 1);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+  };
+
   const Desc = () => {
-    if (data.description) {
+    if (artistData.description) {
       return (
-        <ScrollView>
+        <ScrollView styles={styles.description}>
           <RenderHtml
-            source={{ html: data.description }}
+            source={{ html: artistData.description }}
             contentWidth={width}
             baseStyle={styles.text}
           />
@@ -55,32 +77,36 @@ const ArtistDescription = ({ route }) => {
     }
   };
 
-  if (data && img) {
-    const deathDate = data.birth_date
-      ? data.death_date
-        ? `${data.death_date}`
+  if (artistData && imageData) {
+    const deathDate = artistData.birth_date
+      ? artistData.death_date
+        ? `${artistData.death_date}`
         : 'Still Alive'
       : 'Never Born';
-    const birthDate = data.birth_date ? `${data.birth_date}` : 'Never Born';
+    const birthDate = artistData.birth_date
+      ? `${artistData.birth_date}`
+      : 'Never Born';
     return (
       <View style={styles.container}>
-        <Text style={[styles.text, styles.title]}>{data.title}</Text>
+        <Text style={[styles.text, styles.title]}>{artistData.title}</Text>
         <Text style={[styles.text, styles.dates]}>
           {`Birth: ${birthDate}  Death: ${deathDate}`}
         </Text>
         <Desc />
-        <Image
-          style={styles.image}
-          source={{
-            uri: `https://www.artic.edu/iiif/2/${img.image_id}/full/843,/0/default.jpg`
-          }}
+
+        <List
+          data={imageData}
+          loading={loading}
+          fetchData={fetchImageData}
+          style={styles.list}
+          touchable={false}
         />
       </View>
     );
   }
   return (
     <View style={styles.container}>
-      <ActivityIndicator styles={styles.activityIndicator} />
+      <ActivityIndicator style={styles.activityIndicator} />
     </View>
   );
 };
@@ -93,7 +119,12 @@ const styles = StyleSheet.create({
   dates: { fontSize: 20, fontWeight: '300' },
   activityIndicator: {
     alignSelf: 'center'
-  }
+  },
+  list: {
+    marginTop: 20,
+    flex: 2
+  },
+  description: { flex: 2 }
 });
 
 export default ArtistDescription;

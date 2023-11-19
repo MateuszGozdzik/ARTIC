@@ -9,7 +9,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import LikedButton from './LikedButton';
 
-const ListItem = ({ itemData }) => {
+const ListItem = ({ itemData, touchable }) => {
   const navigation = useNavigation();
 
   const handleItemPress = () => {
@@ -22,6 +22,16 @@ const ListItem = ({ itemData }) => {
       }
     : require('../../assets/no-image.jpeg');
 
+  if (!touchable) {
+    return (
+      <ImageBackground source={imageUri} style={styles.imageBackground}>
+        <View style={styles.overlay}>
+          <Text style={styles.text}>{itemData.title}</Text>
+          <LikedButton itemId={itemData.id} style={styles.icon} />
+        </View>
+      </ImageBackground>
+    );
+  }
   return (
     <TouchableOpacity onPress={handleItemPress}>
       <ImageBackground source={imageUri} style={styles.imageBackground}>
